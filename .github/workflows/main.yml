@@ -33,6 +33,7 @@ jobs:
         with:
           node-version: Use Node.js ${{ matrix.node_version }}
           architecture: User Archtecture ${{ matrix.architecture }}
+      - name: yarn
         run: |
           yarn
           yarn dev
