@@ -76,9 +76,9 @@ export interface IRequestProductsDTO {
   since_id?: number;
   title?: string;
   vendor?: string;
-  handle?: [string];
+  handle?: Object;
   product_type?: string;
-  status?: [string];
+  status?: Object;
   collection_id?: number;
   created_at_min?: Date;
   created_at_max?: Date;
@@ -87,6 +87,6 @@ export interface IRequestProductsDTO {
   published_at_min?: Date;
   published_at_max?: Date;
   published_at_status?: string;
-  fields?: [string];
-  presentment_currencies?: [string];
+  fields?: Object;
+  presentment_currencies?: Object;
 }

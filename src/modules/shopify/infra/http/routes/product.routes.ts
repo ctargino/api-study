@@ -1,7 +1,7 @@
-import _Joi from '@shared/utils/CelebratePatterns';
 import { celebrate, Joi, Segments } from 'celebrate';
 import { Router } from 'express';
-import ProductController from '../controllers/ProductController';
+import _Joi from '@shared/utils/CelebratePatterns';
+import ProductController from '@modules/shopify/infra/http/controllers/ProductController';
 
 const productRouter = Router();
 
@@ -11,14 +11,14 @@ productRouter.get(
   '/',
   celebrate({
     [Segments.QUERY]: {
-      ids: Joi.array().items(Joi.string().required()),
+      ids: Joi.string(),
       limit: _Joi.number,
       since_id: _Joi.number,
       title: Joi.string(),
       vendor: Joi.string(),
-      handle: Joi.array().items(Joi.string().required()),
+      handle: Joi.string(),
       product_type: Joi.string(),
-      status: Joi.array().items(Joi.string().required()),
+      status: Joi.string(),
       collection_id: Joi.number(),
       created_at_min: Joi.date(),
       created_at_max: Joi.date(),
@@ -27,11 +27,24 @@ productRouter.get(
       published_at_min: Joi.date(),
       published_at_max: Joi.date(),
       published_at_status: Joi.string(),
-      fields: Joi.array().items(Joi.string().required()),
-      presentment_currencies: Joi.array().items(Joi.string().required()),
+      fields: Joi.string(),
+      presentment_currencies: Joi.string(),
     },
   }),
   productController.list,
+);
+
+productRouter.get(
+  '/:product_id',
+  celebrate({
+    [Segments.PARAMS]: {
+      product_id: _Joi.number,
+    },
+    [Segments.QUERY]: {
+      fields: Joi.string(),
+    },
+  }),
+  productController.get,
 );
 
 export default productRouter;
