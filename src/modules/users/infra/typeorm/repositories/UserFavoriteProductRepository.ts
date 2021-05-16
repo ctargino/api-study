@@ -49,6 +49,7 @@ export default class UserFavoriteProductRepository
   ): Promise<UserFavoriteProduct | undefined> {
     const userFavoriteProduct = await this.ormRepository.findOne({
       where: ids,
+      loadRelationIds: true,
     });
 
     return userFavoriteProduct;

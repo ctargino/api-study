@@ -17,6 +17,18 @@ export default class CreateUserFavoriteProductService {
     data: IUserFavoriteProductDTO,
   ): Promise<UserFavoriteProduct> {
     try {
+      const userFavoriteExists = await this.userFavoriteProductRepository.get(
+        data,
+      );
+
+      if (userFavoriteExists) {
+        const deleteUser = await this.userFavoriteProductRepository.delete(
+          data,
+        );
+
+        return deleteUser;
+      }
+
       const userFavoriteProduct =
         await this.userFavoriteProductRepository.create(data);
 
