@@ -71,7 +71,7 @@ export interface IImageDTO {
 }
 
 export interface IRequestProductsDTO {
-  ids?: [number];
+  ids?: Object;
   limit?: number;
   since_id?: number;
   title?: string;
