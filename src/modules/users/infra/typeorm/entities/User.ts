@@ -8,6 +8,8 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
+import { Exclude } from 'class-transformer';
+
 import bcrypt from 'bcryptjs';
 
 @Entity('user')
@@ -22,6 +24,7 @@ export default class User {
   email: string;
 
   @Column()
+  @Exclude()
   password: string;
 
   @Column({ nullable: true })
