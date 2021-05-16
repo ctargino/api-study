@@ -24,6 +24,11 @@ jobs:
       - name: Check commit lint
         uses: wagoid/commitlint-github-action@v2
 
+      - uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
       - name: Use Node.js ${{ env.NODE_VERSION }}
         uses: actions/setup-node@v2
         with:
