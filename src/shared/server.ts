@@ -30,7 +30,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 app.use((err: Error, request: Request, response: Response, _: NextFunction) => {
-  console.log(err);
   response.header('Access-Control-Allow-Origin', '*');
   response.header(
     'Access-Control-Allow-Headers',
