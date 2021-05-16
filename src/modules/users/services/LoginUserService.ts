@@ -41,7 +41,7 @@ export default class LoginUserService {
       password,
     });
 
-    if (!user) throw new AppError('User not found', 404);
+    if (!user) throw new AppError('Incorrect user data', 404);
 
     if (!user.token) {
       const { secret, expiresIn } = authConfig.jwt;
