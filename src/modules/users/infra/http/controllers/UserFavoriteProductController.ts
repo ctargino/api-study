@@ -14,10 +14,7 @@ export default class UserFavoriteProductController {
     const { user_id } = request.user;
     const { product_id } = request.params;
 
-    const productExist = await GetProductByApiService(+product_id);
-
-    if (productExist.status == '404')
-      throw new AppError('Product not found', 404);
+    await GetProductByApiService(+product_id);
 
     const createUserFavoriteProduct = container.resolve(
       CreateUserFavoriteProductService,
@@ -76,12 +73,18 @@ export default class UserFavoriteProductController {
       userFavoriteProducts.map(async product => {
         const productByApi = await GetProductByApiService(+product.product_id);
 
-        if (productByApi.status !== '404') {
+        if (productByApi) {
           const userProductList = {
             ...product,
             ...productByApi,
           };
 
+          userProductsList.push(userProductList);
+        } else {
+          const userProductList = {
+            ...product,
+            product: 'Product id no longer exist in API',
+          };
           userProductsList.push(userProductList);
         }
       }),
@@ -106,7 +109,7 @@ export default class UserFavoriteProductController {
 
     const productByApi = await GetProductByApiService(+product_id);
 
-    if (productByApi.status !== '404') {
+    if (productByApi) {
       const userProductList = {
         ...userFavoriteProduct,
         ...productByApi,
@@ -115,6 +118,9 @@ export default class UserFavoriteProductController {
       return response.json(userProductList);
     }
 
-    return response.json(userFavoriteProduct);
+    return response.json({
+      ...userFavoriteProduct,
+      product: 'Product id no longer exist in API',
+    });
   }
 }

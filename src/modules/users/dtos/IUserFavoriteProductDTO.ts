@@ -11,8 +11,9 @@ export interface IRequestUserFavoriteProductsDTO {
   offset?: number;
 }
 
-export interface IListUserFavoriteProducts extends IProductsDTO {
+export interface IListUserFavoriteProducts extends Partial<IProductsDTO> {
   product_id: string;
   added_at: Date;
   user_id: string;
+  product?: string;
 }
