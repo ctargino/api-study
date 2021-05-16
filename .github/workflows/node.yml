@@ -31,3 +31,6 @@ jobs:
 
       - name: Check Lint
         run: yarn eslint
+
+      - name: Check commit message
+        run: wagoid/commitlint-github-action@v2
