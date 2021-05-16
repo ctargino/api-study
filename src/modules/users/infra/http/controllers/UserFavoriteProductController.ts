@@ -14,7 +14,10 @@ export default class UserFavoriteProductController {
     const { user_id } = request.user;
     const { product_id } = request.params;
 
-    await GetProductByApiService(+product_id);
+    const productExist = await GetProductByApiService(+product_id);
+
+    if (productExist.status == '404')
+      throw new AppError('Product not found', 404);
 
     const createUserFavoriteProduct = container.resolve(
       CreateUserFavoriteProductService,
@@ -23,6 +26,9 @@ export default class UserFavoriteProductController {
       user_id,
       product_id,
     });
+
+    if (!userFavoriteProduct.product_id)
+      return response.json({ message: 'Product is no longer favorite' });
 
     return response.json(userFavoriteProduct);
   }
@@ -70,7 +76,7 @@ export default class UserFavoriteProductController {
       userFavoriteProducts.map(async product => {
         const productByApi = await GetProductByApiService(+product.product_id);
 
-        if (productByApi) {
+        if (productByApi.status !== '404') {
           const userProductList = {
             ...product,
             ...productByApi,
@@ -97,6 +103,17 @@ export default class UserFavoriteProductController {
     });
 
     if (!userFavoriteProduct) throw new AppError('Registry not found', 404);
+
+    const productByApi = await GetProductByApiService(+product_id);
+
+    if (productByApi.status !== '404') {
+      const userProductList = {
+        ...userFavoriteProduct,
+        ...productByApi,
+      };
+
+      return response.json(userProductList);
+    }
 
     return response.json(userFavoriteProduct);
   }
