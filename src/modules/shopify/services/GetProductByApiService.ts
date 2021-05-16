@@ -15,8 +15,10 @@ export default async (
       return res.data;
     })
     .catch(error => {
+      console.log(error);
+
       return {
-        error: error.response.data.message,
+        error: error.response.data.errors,
         status: error.response.status,
       };
     });

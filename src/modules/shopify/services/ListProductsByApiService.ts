@@ -15,7 +15,7 @@ export default async (params: IRequestProductsDTO): Promise<IProductsDTO[]> => {
     })
     .catch(error => {
       return {
-        error: error.response.data.message,
+        error: error.response.data.errors,
         status: error.response.status,
       };
     });
