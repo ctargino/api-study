@@ -3,11 +3,13 @@ import { Router, Request, Response } from 'express';
 import StatusController from '@shared/controller/StatusController';
 import userRouter from '@modules/users/infra/http/routes/user.routes';
 import productRouter from '@modules/shopify/infra/http/routes/product.routes';
+import userFavoriteProductRouter from '@modules/users/infra/http/routes/user.favorite.products.routes';
 
 const routes = Router();
 
 routes.use('/users', userRouter);
 routes.use('/products', productRouter);
+routes.use('/users-favorites', userFavoriteProductRouter);
 
 routes.use('/status', StatusController.status);
 routes.use('/ready', StatusController.ready);

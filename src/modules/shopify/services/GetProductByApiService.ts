@@ -4,7 +4,7 @@ import IProductsDTO from '@modules/shopify/dtos/IProductsDTO';
 
 export default async (
   product_id: number,
-  params: Object,
+  params?: Object,
 ): Promise<IProductsDTO> => {
   const products = await axios({
     method: 'GET',
@@ -15,8 +15,10 @@ export default async (
       return res.data;
     })
     .catch(error => {
+      console.log(error);
+
       return {
-        error: error.response.data.message,
+        error: error.response.data.errors,
         status: error.response.status,
       };
     });
