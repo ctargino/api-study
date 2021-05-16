@@ -12,4 +12,10 @@ export interface IParamsUserDTO {
 export interface IUpdateUserDTO {
   name?: string;
   password?: string;
+  token?: string;
+}
+
+export interface ILoginDTO {
+  email: string;
+  password: string;
 }

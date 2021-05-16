@@ -2,6 +2,7 @@ import { getRepository, Repository } from 'typeorm';
 
 import {
   ICreateUserDTO,
+  ILoginDTO,
   IParamsUserDTO,
   IUpdateUserDTO,
 } from '@modules/users/dtos/IUserDTO';
@@ -23,8 +24,8 @@ export default class UserRepository implements IUserRepository {
     return user;
   }
 
-  public async get(user_id: string): Promise<User | undefined> {
-    const user = this.ormRepository.findOne({ where: user_id });
+  public async get(params: ILoginDTO): Promise<User | undefined> {
+    const user = this.ormRepository.findOne(params);
 
     return user;
   }
