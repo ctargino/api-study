@@ -23,8 +23,8 @@ export default class UserRepository implements IUserRepository {
     return user;
   }
 
-  public async get(user_id: string): Promise<User> {
-    const user = this.ormRepository.findOneOrFail({ where: user_id });
+  public async get(user_id: string): Promise<User | undefined> {
+    const user = this.ormRepository.findOne({ where: user_id });
 
     return user;
   }

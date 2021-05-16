@@ -7,7 +7,7 @@ import {
 
 export default interface IUserRepository {
   create(data: ICreateUserDTO): Promise<User>;
-  get(user_id: string): Promise<User>;
+  get(user_id: string): Promise<User | undefined>;
   list(params: IParamsUserDTO): Promise<User[]>;
   update(user_id: string, data: IUpdateUserDTO): Promise<User>;
   delete(user_id: string): Promise<User>;
