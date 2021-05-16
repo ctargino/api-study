@@ -30,7 +30,7 @@ export default class CreateUserService {
 
       return user;
     } catch (err) {
-      throw new AppError(err);
+      throw new AppError(err.message);
     }
   }
 }
