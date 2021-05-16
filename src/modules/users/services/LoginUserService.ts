@@ -34,14 +34,15 @@ export default class LoginUserService {
   ) {}
 
   public async execute(params: ILoginDTO): Promise<User> {
-    const password = bcrypt.hashSync(String(params.password), 8);
-
     const user = await this.userRepository.get({
       email: params.email,
-      password,
     });
 
-    if (!user) throw new AppError('Incorrect user data', 404);
+    if (!user) throw new AppError('User does not exist', 404);
+
+    const password = bcrypt.compareSync(String(params.password), user.password);
+
+    if (!password) throw new AppError('Incorrect password', 401);
 
     if (!user.token) {
       const { secret, expiresIn } = authConfig.jwt;
