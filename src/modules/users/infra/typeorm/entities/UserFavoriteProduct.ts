@@ -10,7 +10,7 @@ import {
 @Entity('user_favorite_product')
 export default class UserFavoriteProduct {
   @PrimaryColumn()
-  product_id: number;
+  product_id: string;
 
   @ManyToOne(() => User, user => user.user_id, { primary: true })
   @JoinColumn({ name: 'user_id' })
