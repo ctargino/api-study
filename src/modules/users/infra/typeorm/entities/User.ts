@@ -24,7 +24,7 @@ export default class User {
   @Column()
   password: string;
 
-  @Column()
+  @Column({ nullable: true })
   token: string;
 
   @CreateDateColumn({ type: 'timestamp with time zone' })
