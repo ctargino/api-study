@@ -5,7 +5,7 @@ import IUserRepository from '@modules/users/repositories/IUserRepository';
 import AppError from '@shared/errors/AppError';
 
 @injectable()
-export default class CreateUserService {
+export default class DeleteUserService {
   constructor(
     @inject('UserRepository')
     private userRepository: IUserRepository,

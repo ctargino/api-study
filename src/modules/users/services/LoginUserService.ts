@@ -27,15 +27,14 @@ interface ITokenPayload {
 }
 
 @injectable()
-export default class CreateUserService {
+export default class LoginUserService {
   constructor(
     @inject('UserRepository')
     private userRepository: IUserRepository,
   ) {}
 
   public async execute(params: ILoginDTO): Promise<User> {
-    let { password } = params;
-    password = bcrypt.hashSync(params.password, 8);
+    const password = bcrypt.hashSync(String(params.password), 8);
 
     const user = await this.userRepository.get({
       email: params.email,
