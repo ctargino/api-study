@@ -10,7 +10,7 @@
     "start": "ts-node -r tsconfig-paths/register --transpile-only src/shared/server.ts",
     "dev": "ts-node-dev -r tsconfig-paths/register --transpile-only --ignore-watch node_modules src/shared/server.ts",
     "typeorm": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
-    "eslint": "eslint src/**"
+    "eslint": "eslint src/** --ext ts"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
