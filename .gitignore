@@ -5,6 +5,5 @@ yarn-error.log
 tmp
 
 .editorconfig
-.env
 .vscode
 .idea
