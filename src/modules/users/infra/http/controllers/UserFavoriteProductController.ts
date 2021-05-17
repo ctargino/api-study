@@ -1,5 +1,6 @@
 import { container } from 'tsyringe';
 import { Request, Response } from 'express';
+import { scheduleJob } from 'node-schedule';
 
 import CreateUserFavoriteProductService from '@modules/users/services/CreateUserFavoriteProductService';
 import DeleteUserFavoriteProductService from '@modules/users/services/DeleteUserFavoriteProductService';
@@ -8,13 +9,31 @@ import GetUserFavoriteProductService from '@modules/users/services/GetUserFavori
 import AppError from '@shared/errors/AppError';
 import GetProductByApiService from '@modules/shopify/services/GetProductByApiService';
 import { IListUserFavoriteProducts } from '@modules/users/dtos/IUserFavoriteProductDTO';
+import SendEmailService from '@modules/users/services/SendEmailService';
+import GetUserService from '@modules/users/services/GetUserService';
+
+function sendEmailMessage(
+  email: string | undefined,
+  action: string,
+  product: string,
+  list: Array<string>,
+) {
+  const message = {
+    from: 'contateste99999123@gmail.com',
+    to: email,
+    subject: 'Your Shopify favourites products has changes',
+    html: `<h1><b>Hey there! </b></h1> <h3><br> You have ${action} to your favorite list the item <font color='red'><b>${product}</b></font> </br><br> Now, You have these products in your favourite list: <font color='red'><b>${list}</b></font> </br></h3>`,
+  };
+  return message;
+}
 
 export default class UserFavoriteProductController {
   public async create(request: Request, response: Response): Promise<Response> {
     const { user_id } = request.user;
     const { product_id } = request.params;
 
-    await GetProductByApiService(+product_id);
+    const product = await GetProductByApiService(+product_id);
+    product;
 
     const createUserFavoriteProduct = container.resolve(
       CreateUserFavoriteProductService,
@@ -24,10 +43,58 @@ export default class UserFavoriteProductController {
       product_id,
     });
 
-    if (!userFavoriteProduct.product_id)
-      return response.json({ message: 'Product is no longer favorite' });
+    const getUser = container.resolve(GetUserService);
+    const user = await getUser.execute(user_id);
 
-    return response.json(userFavoriteProduct);
+    const listUserFavoriteProducts = container.resolve(
+      ListUserFavoriteProductService,
+    );
+    const userFavoriteProducts = await listUserFavoriteProducts.execute({
+      user_id,
+    });
+
+    const userProductsList: string[] = [];
+
+    await Promise.all(
+      userFavoriteProducts.map(async product => {
+        const productByApi = await GetProductByApiService(+product.product_id);
+
+        if (productByApi) {
+          userProductsList.push(productByApi.product.title);
+        }
+      }),
+    );
+
+    const sendEmail = container.resolve(SendEmailService);
+    const date = new Date();
+    const dateEmail = new Date(date.getTime() + 2 * 60000);
+
+    if (!userFavoriteProduct.product_id) {
+      scheduleJob(dateEmail, () => {
+        sendEmail.execute(
+          sendEmailMessage(
+            user?.email,
+            'deleted',
+            product.product.title,
+            userProductsList,
+          ),
+        );
+      });
+      return response.json({ message: 'Product is no longer favorite' });
+    }
+
+    scheduleJob(dateEmail, () => {
+      sendEmail.execute(
+        sendEmailMessage(
+          user?.email,
+          'added',
+          product.product.title,
+          userProductsList,
+        ),
+      );
+    });
+
+    return response.json({ ...userFavoriteProduct, ...product });
   }
 
   public async delete(request: Request, response: Response): Promise<Response> {
@@ -83,7 +150,7 @@ export default class UserFavoriteProductController {
         } else {
           const userProductList = {
             ...product,
-            product: 'Product id no longer exist in API',
+            no_product: 'Product id no longer exist in API',
           };
           userProductsList.push(userProductList);
         }
