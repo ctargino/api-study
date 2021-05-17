@@ -15,5 +15,5 @@ export interface IListUserFavoriteProducts extends Partial<IProductsDTO> {
   product_id: string;
   added_at: Date;
   user_id: string;
-  product?: string;
+  no_product?: string;
 }
