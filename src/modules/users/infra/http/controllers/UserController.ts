@@ -2,6 +2,7 @@ import CreateUserService from '@modules/users/services/CreateUserService';
 import DeleteUserService from '@modules/users/services/DeleteUserService';
 import GetUserService from '@modules/users/services/GetUserService';
 import LoginUserService from '@modules/users/services/LoginUserService';
+import UpdateUserService from '@modules/users/services/UpdateUserService';
 import AppError from '@shared/errors/AppError';
 import { classToClass } from 'class-transformer';
 import { Request, Response } from 'express';
@@ -29,6 +30,22 @@ export default class UserController {
     const user = await getLogin.execute(params);
 
     return response.json(classToClass(user));
+  }
+
+  public async logout(request: Request, response: Response): Promise<Response> {
+    const { user_id } = request.user;
+
+    const getUser = container.resolve(GetUserService);
+    const user = await getUser.execute(user_id);
+
+    if (!user) throw new AppError('User not found', 404);
+
+    user.token = '';
+
+    const logoutToken = container.resolve(UpdateUserService);
+    await logoutToken.execute(user_id, { token: user.token });
+
+    return response.json({ message: 'User successfully logged off' });
   }
 
   public async delete(request: Request, response: Response): Promise<Response> {

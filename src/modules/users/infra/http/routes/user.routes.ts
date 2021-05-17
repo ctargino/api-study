@@ -43,4 +43,6 @@ userRouter.delete(
   userController.delete,
 );
 
+userRouter.get('/logout', userController.logout);
+
 export default userRouter;
