@@ -9,7 +9,6 @@
 - Rodar o comando `docker-compose up -d` para rodar o banco
 - Rodar o comando `yarn typeorm migration:run` para criação das tabelas
 - Rodar o comando `yarn dev` para executar o projeto
-- Deixei o arquivo .env disponivel propositalmente para facilitar, sendo o normal ir apenas o env.example
 
 ## Documentação
 
