@@ -1,4 +1,4 @@
-# Teste Back-end AfterSale!
+# Estudos Back-end!
 
 > Olá! Me chamo Caio Targino e projeto de estudos **Back-end Node**.
 
