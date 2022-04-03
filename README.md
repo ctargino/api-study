@@ -1,6 +1,6 @@
 # Teste Back-end AfterSale!
 
-> Olá! Me chamo Caio Targino e estou enviando este projeto para avaliação para vaga **Back-end Node**.
+> Olá! Me chamo Caio Targino e projeto de estudos **Back-end Node**.
 
 # Passos
 
