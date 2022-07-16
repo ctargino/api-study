@@ -18,7 +18,6 @@
 ## Pacotes e Sistemas utilizados
 
 - Github Actions
-- SonarCloud
 - Docker
 - Github
 - Postman
